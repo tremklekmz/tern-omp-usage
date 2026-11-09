@@ -159,6 +159,18 @@ expect(text:find("Codex", 1, true) == nil, "Codex should hide when omp has no Co
 expect(text:find("⚠", 1, true) == nil, "a provider without an account is not an error", text)
 expect(text:find("✻ Claude", 1, true) ~= nil, "Claude stays when only Codex has no account", text)
 
+-- A read omp couldn't make (rate-limited after a click's invalidate) lists the account without a report: the last
+-- reading stays, flagged with ⚠, instead of the group vanishing as if there were no account.
+render(claude(0.4, 0, now_ms + 7 * DAY))
+text = render({ reports = {}, accountsWithoutUsage = { { provider = "anthropic" } } }, {
+	reports = {},
+	accountsWithoutUsage = { { provider = "openai-codex" } },
+})
+expect(text:find("✻ Claude", 1, true) ~= nil, "an unread Claude account keeps the last reading", text)
+expect(text:find("40%", 1, true) ~= nil, "the last Claude 5h reading stays", text)
+expect(text:find("⬢ Codex", 1, true) ~= nil, "an unread Codex account keeps the last reading", text)
+expect(text:find("⚠", 1, true) ~= nil, "a kept reading is flagged as a failed read", text)
+
 -- Settings: each answer is what the palette prompt receives.
 local function settle(answer: string, input: string): boolean
 	local ok = config.answer[answer](input)

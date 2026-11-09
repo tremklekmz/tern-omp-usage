@@ -199,6 +199,21 @@ local function run_json(argv: { string }, done: (any?, any?) -> ())
 	end
 end
 
+-- omp answers an account it couldn't read this time with no report and the account under accountsWithoutUsage:
+-- Anthropic refuses reads under ~5 min apart, and a click invalidates omp's cache. That is a failed read, which keeps
+-- the last reading; only an answer without the account hides the group.
+local function unread(data: any, provider: string): boolean
+	if type(data.reports) == "table" and #data.reports > 0 then
+		return false
+	end
+	for _, a in data.accountsWithoutUsage or {} do
+		if a.provider == provider then
+			return true
+		end
+	end
+	return false
+end
+
 function M.fetch(invalidate: boolean?)
 	if busy then
 		return
@@ -209,6 +224,9 @@ function M.fetch(invalidate: boolean?)
 	-- plugin whose timer callback runs over 50 ms, and on Windows starting a process takes a good part of that.
 	local function fetch_codex()
 		run_json({ OMP, "usage", "--json", "-p", "openai-codex" }, function(data, cx)
+			if data and unread(data, "openai-codex") then
+				data = nil
+			end
 			failed.codex = data == nil
 			if data then
 				codex = parse_codex(data)
@@ -226,6 +244,9 @@ function M.fetch(invalidate: boolean?)
 	local function go()
 		-- nil data means omp failed; an answer with no account for the provider hides its group instead.
 		run_json({ OMP, "usage", "--json", "-p", "anthropic" }, function(data, cx)
+			if data and unread(data, "anthropic") then
+				data = nil
+			end
 			failed.claude = data == nil
 			if data then
 				claude = parse_claude(data)

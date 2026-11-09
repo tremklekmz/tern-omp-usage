@@ -2,6 +2,10 @@
 
 Every version `plugin.toml` names has a section here. When that version reaches `main`, CI publishes the section as the GitHub release, and installed copies of the plugin show it.
 
+## 0.4.3
+
+- Clicking a segment no longer makes Claude or Codex vanish. The click clears omp's cache, Anthropic refuses a read that soon, and omp answers without a report but with the account under `accountsWithoutUsage`; the plugin took that for "no account" and hid the group. It now keeps the last reading and shows `⚠` until a read succeeds.
+
 ## 0.4.2
 
 - Work-week budget: a date counts toward the 7-day window only when the window holds its noon. A window that resets Saturday 21:00 used to count the three hours of the Saturday it opened as a whole day, unlocking one share too many all week; now it runs Sunday to Saturday.
