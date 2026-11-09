@@ -136,7 +136,7 @@ files["extras.luau"] = "return {}"
 update.install(cx)
 expect(files["DATA/extras.luau"] == "return {}", "extras.luau is copied to the data folder before installing")
 expect(ran ~= nil and ran[2] == "plugin" and ran[3] == "install" and ran[5] == "--force", "the update reinstalls with --force")
-expect(ran ~= nil and ran[4] == "https://github.com/joaodutra88/tern-omp-usage", "from the repository")
+expect(ran ~= nil and ran[4] == "https://github.com/tremklekmz/tern-omp-usage", "from the repository")
 -- Windows refuses to replace a folder a process runs in, and the default cwd is the plugin's own folder.
 expect(ran_opts ~= nil and ran_opts.cwd == "DATA", "the reinstall runs outside the plugin folder")
 

@@ -188,10 +188,17 @@ text = render(claude(0.4, 0, now_ms + 7 * DAY))
 expect(text:find("⬢ Codex", 1, true) ~= nil, "toggling again shows the part", text)
 expect(not settle("part", "weather"), "an unknown part is refused", "")
 
--- Window started two days ago: three days so far; with all 7 days counting, 3/7 of the quota is unlocked.
+-- With all 7 days counting, each date the window holds at noon unlocks 1/7. Resets are pinned to a clock time, since
+-- whether the window's first date counts depends on it.
+local now_t = os.date("*t") :: any
+local midnight_ms = (os.time() - now_t.hour * 3600 - now_t.min * 60 - now_t.sec) * 1000
 settle("workdays", "7")
-text = render(claude(0, 0, now_ms + 5 * DAY))
-expect(text:find("📅 left 43%", 1, true) ~= nil, "7 work days unlock 1/7 per day", text)
+-- Opened two days ago at 03:00: that date, yesterday and today, 3/7.
+text = render(claude(0, 0, midnight_ms + 5 * DAY + 3 * 3600 * 1000))
+expect(text:find("📅 left 43%", 1, true) ~= nil, "a morning reset counts the date the window opened", text)
+-- Opened two days ago at 21:00: those three hours belong to the window's last date, so yesterday and today, 2/7.
+text = render(claude(0, 0, midnight_ms + 5 * DAY + 21 * 3600 * 1000))
+expect(text:find("📅 left 29%", 1, true) ~= nil, "an evening reset leaves the date the window opened out", text)
 expect(not settle("workdays", "8"), "more than 7 work days is refused", "")
 
 settle("crit", "60%")

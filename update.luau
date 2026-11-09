@@ -4,8 +4,8 @@ local config = require("./config")
 local M = {}
 
 local P = "plugin.omp-usage."
-local SOURCE = "https://github.com/joaodutra88/tern-omp-usage"
-local LATEST = "https://api.github.com/repos/joaodutra88/tern-omp-usage/releases/latest"
+local SOURCE = "https://github.com/tremklekmz/tern-omp-usage"
+local LATEST = "https://api.github.com/repos/tremklekmz/tern-omp-usage/releases/latest"
 local DAY_S = 86400
 
 M.VERSION = "0.0.0"

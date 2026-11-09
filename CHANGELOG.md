@@ -2,6 +2,11 @@
 
 Every version `plugin.toml` names has a section here. When that version reaches `main`, CI publishes the section as the GitHub release, and installed copies of the plugin show it.
 
+## 0.4.2
+
+- Work-week budget: a date counts toward the 7-day window only when the window holds its noon. A window that resets Saturday 21:00 used to count the three hours of the Saturday it opened as a whole day, unlocking one share too many all week; now it runs Sunday to Saturday.
+- Updates come from the fork, `tremklekmz/tern-omp-usage`.
+
 ## 0.4.1
 
 **On Windows with 0.4.0:** the update button fails with "The process cannot access the file". Run `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force` once; from 0.4.1 on the button works.

@@ -16,7 +16,7 @@ local DATA_DIR = "C:\\Users\\test\\AppData\\Local\\Tern\\plugin-data\\omp-usage"
 local LOCAL_APP = "C:\\Users\\test\\AppData\\Local"
 H.OMP = LOCAL_APP .. "\\Tern\\omp\\bin\\omp.exe"
 H.TERN = LOCAL_APP .. "\\Programs\\Tern\\tern.com"
-H.SOURCE = "https://github.com/joaodutra88/tern-omp-usage"
+H.SOURCE = "https://github.com/tremklekmz/tern-omp-usage"
 H.FETCH_MS = 5 * 60 * 1000
 -- What Windows answers when a folder being replaced is some process's working directory.
 H.LOCKED = "tern plugin: The process cannot access the file because it is being used by another process. (os error 32)"

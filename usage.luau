@@ -39,24 +39,34 @@ local function track(key: string, f: number?)
 	prev[key] = f
 end
 
+-- Local noon of the date `at` falls on. Luau's os.time(table) reads the table as UTC, so this works from the timestamp.
+local function noon_of(at: number): number
+	local t = os.date("*t", at) :: any
+	return at - t.hour * 3600 - t.min * 60 - t.sec + 12 * 3600
+end
+
 -- Work days (from Monday) of the 7d window up to today each unlock 1/workdays; a holiday's share stays banked.
+-- A date belongs to the window when the window holds its noon: a window that resets Saturday 21:00 runs Sunday to
+-- Saturday, not from the three hours of the Saturday it opened.
 local function weekly_slack(used: number?, resets: number?): number?
 	if not used or not resets then
 		return nil
 	end
 	local workdays = config.get("workdays")
-	local start = resets / 1000 - 7 * 86400
+	local reset = resets / 1000
+	local start = reset - 7 * 86400
 	local today_key = os.date("%Y%m%d") :: string
 	local days = 0
-	for i = 0, 7 do
-		local at = start + i * 86400
-		if (os.date("%Y%m%d", at) :: string) > today_key then
+	local noon = noon_of(start)
+	for _ = 0, 7 do
+		if noon >= reset or (os.date("%Y%m%d", noon) :: string) > today_key then
 			break
 		end
-		local monday_based = ((os.date("*t", at) :: any).wday + 5) % 7 + 1
-		if monday_based <= workdays then
+		local monday_based = ((os.date("*t", noon) :: any).wday + 5) % 7 + 1
+		if noon >= start and monday_based <= workdays then
 			days += 1
 		end
+		noon = noon_of(noon + 86400)
 	end
 	return math.min(1, days / workdays) - used
 end
