@@ -127,7 +127,7 @@ Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
 | コマンド | 動作 |
 |---|---|
 | **OMP usage: show or hide a part…** | 表示をオン・オフする部分を入力します: `claude`、`codex`、`today`、`cost`、`budget`、`reset`、`credits`、`fable`、`forecast`(`⏳`)、`alerts`(トースト)、`updates`。 |
-| **OMP usage: language…** | `en`、`pt-BR`、`es`、`zh-CN`、`ja`。 |
+| **OMP usage: language…** | `en`、`pt-BR`、`es`、`zh-CN`、`ja`、`de`、`fr`。 |
 | **OMP usage: work days per week…** | 月曜から数えて何日が週間クォータを解放するか。既定の `5` は月曜から金曜で、1 日 20% ずつです。 |
 | **OMP usage: red badge threshold…** | ウィンドウが点滅する赤いバッジになるパーセンテージ(既定値 80)。 |
 | **OMP usage: reset settings** | 既定値に戻します。 |

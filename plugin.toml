@@ -1,7 +1,7 @@
 schema = 1
 id = "omp-usage"
 name = "OMP usage"
-version = "0.4.3"
+version = "0.4.4"
 description = "Claude and Codex limits from omp in the status line, with a work-week budget, saved resets, today's tokens and cost, alerts and a 7-day dashboard."
 icon = "gauge"
 host = "host.luau"

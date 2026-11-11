@@ -125,7 +125,7 @@ Open the command palette and type `OMP usage`. Settings are kept in the plugin's
 | Command | Does |
 |---|---|
 | **OMP usage: show or hide a part…** | Type a part to turn it on or off: `claude`, `codex`, `today`, `cost`, `budget`, `reset`, `credits`, `fable`, `forecast` (the `⏳`), `alerts` (the toasts), `updates`. |
-| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN` or `ja`. |
+| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN`, `ja`, `de` or `fr`. |
 | **OMP usage: work days per week…** | How many days, counted from Monday, unlock the weekly quota. The default `5` means Monday to Friday, 20% each. |
 | **OMP usage: red badge threshold…** | The percentage where a window becomes the pulsing red badge (default 80). |
 | **OMP usage: reset settings** | Back to the defaults. |

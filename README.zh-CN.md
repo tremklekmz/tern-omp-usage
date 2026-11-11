@@ -127,7 +127,7 @@ Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
 | 命令 | 作用 |
 |---|---|
 | **OMP usage: show or hide a part…** | 输入一个部分名称来开启或关闭它：`claude`、`codex`、`today`、`cost`、`budget`、`reset`、`credits`、`fable`、`forecast`（即 `⏳`）、`alerts`（即弹出通知）、`updates`。 |
-| **OMP usage: language…** | `en`、`pt-BR`、`es`、`zh-CN` 或 `ja`。 |
+| **OMP usage: language…** | `en`、`pt-BR`、`es`、`zh-CN`、`ja`、`de` 或 `fr`。 |
 | **OMP usage: work days per week…** | 从周一算起，有多少天解锁每周额度。默认值 `5` 表示周一至周五，每天 20%。 |
 | **OMP usage: red badge threshold…** | 窗口变为闪烁红色徽章的百分比（默认 80）。 |
 | **OMP usage: reset settings** | 恢复默认设置。 |

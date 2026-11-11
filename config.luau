@@ -17,7 +17,7 @@ M.PARTS = {
 	alerts = true,
 	forecast = true,
 }
-M.LANGUAGES = { "en", "pt-BR", "es", "zh-CN", "ja" }
+M.LANGUAGES = { "en", "pt-BR", "es", "zh-CN", "ja", "de", "fr" }
 
 local DEFAULTS = { language = "en", workdays = 5, crit = 0.8 }
 

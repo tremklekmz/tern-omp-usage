@@ -127,7 +127,7 @@ Abre la paleta de comandos y escribe `OMP usage`. La configuración se guarda en
 | Comando | Qué hace |
 |---|---|
 | **OMP usage: show or hide a part…** | Escribe una parte para activarla o desactivarla: `claude`, `codex`, `today`, `cost`, `budget`, `reset`, `credits`, `fable`, `forecast` (el `⏳`), `alerts` (los avisos emergentes), `updates`. |
-| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN` o `ja`. |
+| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN`, `ja`, `de` o `fr`. |
 | **OMP usage: work days per week…** | Cuántos días, contados desde el lunes, desbloquean la cuota semanal. El valor por defecto `5` significa de lunes a viernes, 20% cada uno. |
 | **OMP usage: red badge threshold…** | El porcentaje en el que una ventana se convierte en la insignia roja pulsante (por defecto 80). |
 | **OMP usage: reset settings** | Vuelve a los valores por defecto. |

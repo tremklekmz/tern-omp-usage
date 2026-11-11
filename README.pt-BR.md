@@ -127,7 +127,7 @@ Abra a paleta de comandos e digite `OMP usage`. As configurações ficam na past
 | Comando | O que faz |
 |---|---|
 | **OMP usage: show or hide a part…** | Digite uma parte para ligar ou desligar: `claude`, `codex`, `today`, `cost`, `budget`, `reset`, `credits`, `fable`, `forecast` (o `⏳`), `alerts` (os avisos), `updates`. |
-| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN` ou `ja`. |
+| **OMP usage: language…** | `en`, `pt-BR`, `es`, `zh-CN`, `ja`, `de` ou `fr`. |
 | **OMP usage: work days per week…** | Quantos dias, contando a partir de segunda, liberam a cota semanal. O padrão `5` significa de segunda a sexta, 20% cada. |
 | **OMP usage: red badge threshold…** | A porcentagem em que uma janela vira o selo vermelho pulsante (padrão 80). |
 | **OMP usage: reset settings** | Volta aos padrões. |

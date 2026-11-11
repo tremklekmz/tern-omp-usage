@@ -2,14 +2,20 @@
 
 Every version `plugin.toml` names has a section here. When that version reaches `main`, CI publishes the section as the GitHub release, and installed copies of the plugin show it.
 
-## 0.4.3
+## 0.4.4
 
 - Clicking a segment no longer makes Claude or Codex vanish. The click clears omp's cache, Anthropic refuses a read that soon, and omp answers without a report but with the account under `accountsWithoutUsage`; the plugin took that for "no account" and hid the group. It now keeps the last reading and shows `⚠` until a read succeeds.
+- Work-week budget: a date counts toward the 7-day window only when the window holds its noon. A window that resets Saturday 21:00 used to count the three hours of the Saturday it opened as a whole day, unlocking one share too many all week; now it runs Sunday to Saturday.
+- Updates come from the fork, `tremklekmz/tern-omp-usage`.
+
+## 0.4.3
+
+- German (`de`) and French (`fr`) in **OMP usage: language…**.
+- CI: `actions/checkout` 7 and `actions/setup-python` 7, off the deprecated Node 20.
 
 ## 0.4.2
 
-- Work-week budget: a date counts toward the 7-day window only when the window holds its noon. A window that resets Saturday 21:00 used to count the three hours of the Saturday it opened as a whole day, unlocking one share too many all week; now it runs Sunday to Saturday.
-- Updates come from the fork, `tremklekmz/tern-omp-usage`.
+- Tern 0.9.16 moved the plugin segments into a group inside the status bar, so the rule that zeroes Tern's gap stopped matching and every segment drifted apart: the dots of a meter, a label from its value. The rule now matches at any depth and the bar looks as before.
 
 ## 0.4.1
 
