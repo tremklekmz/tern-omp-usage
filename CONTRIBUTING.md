@@ -5,7 +5,7 @@ Issues and pull requests are welcome: bugs, new providers, translations, better 
 ## Run it locally
 
 ```sh
-git clone https://github.com/joaodutra88/tern-omp-usage
+git clone https://github.com/tremklekmz/tern-omp-usage
 tern plugin link tern-omp-usage
 ```
 

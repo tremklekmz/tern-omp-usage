@@ -59,7 +59,7 @@ Collect these and offer to open the issue for them. Show the text first, and onl
 **Remove emails, account ids, org names and tokens** from `omp usage --json` output before pasting it. That output contains them.
 
 ```sh
-gh issue create --repo joaodutra88/tern-omp-usage --template bug_report.yml
+gh issue create --repo tremklekmz/tern-omp-usage --template bug_report.yml
 ```
 
 If `gh` can't use the template non-interactively, pass `--title` and `--body` with the same sections as `.github/ISSUE_TEMPLATE/bug_report.yml`.

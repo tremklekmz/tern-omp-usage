@@ -2,10 +2,10 @@
 
 <img src="assets/banner.png" width="760" alt="tern-omp-usage: omp 経由の Claude と Codex の上限を Tern のウィジェットバーに表示">
 
-[![check](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml)
+[![check](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/joaodutra88/tern-omp-usage?style=flat)](https://github.com/joaodutra88/tern-omp-usage/stargazers)
-[![Latest release](https://img.shields.io/github/v/release/joaodutra88/tern-omp-usage)](https://github.com/joaodutra88/tern-omp-usage/releases/latest)
+[![GitHub stars](https://img.shields.io/github/stars/tremklekmz/tern-omp-usage?style=flat)](https://github.com/tremklekmz/tern-omp-usage/stargazers)
+[![Latest release](https://img.shields.io/github/v/release/tremklekmz/tern-omp-usage)](https://github.com/tremklekmz/tern-omp-usage/releases/latest)
 
 [omp](https://omp.sh) ユーザー向けの [Tern](https://stencil.so/tern) プラグインです。そのウィジェットが、Claude と Codex のサブスクリプション上限、今週の予算、保存済みのリセット、今日のトークン数・コスト・速度を Tern のウィジェットバーに表示し続けます。今日のコストをクリックすると、omp が追跡するすべてのプロバイダーを含む過去 7 日間のダッシュボードが開きます。
 
@@ -57,7 +57,7 @@
 ## インストール
 
 ```sh
-tern plugin install https://github.com/joaodutra88/tern-omp-usage
+tern plugin install https://github.com/tremklekmz/tern-omp-usage
 ```
 
 Anthropic と / または OpenAI Codex に `omp` でサインインしておく必要があります。ターミナルで `omp usage` が動作することを確認してください。このプラグインは Tern が管理する omp (Windows では `%LOCALAPPDATA%\Tern\omp\bin\omp.exe`、macOS では `~/Library/Application Support/Tern/omp/bin/omp`) を使用し、見つからない場合は `PATH` 上の `omp` にフォールバックします。Tern のデーモンが見つけられない場合は、`OMP_USAGE_BIN` にフルパスを設定してください。
@@ -81,9 +81,9 @@ Anthropic と / または OpenAI Codex に `omp` でサインインしておく�
 omp、Claude Code、Codex、またはコマンドを実行できる任意のエージェントに、次を貼り付けます:
 
 ```text
-Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
+Install the Tern plugin https://github.com/tremklekmz/tern-omp-usage for me.
 1. Check `omp usage --json -p anthropic` (or `-p openai-codex`) works. If it doesn't, help me sign in with omp first.
-2. Run `tern plugin install https://github.com/joaodutra88/tern-omp-usage`.
+2. Run `tern plugin install https://github.com/tremklekmz/tern-omp-usage`.
 3. Run `tern plugin list --json` and confirm `omp-usage` has status "ready".
 4. If it isn't ready, read the lines containing `omp-usage` in Tern's log
    (`%LOCALAPPDATA%\Tern\Logs\tern.log` on Windows) and the repo's AGENTS.md, then tell me what is wrong.
@@ -101,8 +101,8 @@ Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
 | `omp stats --json` | 5 分ごと |
 | `omp usage --history --json --days 7`、続けて `omp stats --json` | ダッシュボードを開いたときと、その中で `r` を押したとき |
 | `omp usage invalidate` | 上限のウィジェットをクリックしたとき。omp のキャッシュを回避するため |
-| `GET api.github.com/repos/joaodutra88/tern-omp-usage/releases/latest` | マシンごとに 1 日 1 回、トークンなし。`updates` または `OMP_USAGE_NO_UPDATE_CHECK=1` でオフ |
-| `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force` | `⬆` をクリックするか、更新コマンドを実行したときのみ |
+| `GET api.github.com/repos/tremklekmz/tern-omp-usage/releases/latest` | マシンごとに 1 日 1 回、トークンなし。`updates` または `OMP_USAGE_NO_UPDATE_CHECK=1` でオフ |
+| `tern plugin install https://github.com/tremklekmz/tern-omp-usage --force` | `⬆` をクリックするか、更新コマンドを実行したときのみ |
 
 設定、各日のトークン数とコスト(ダッシュボード用)、通知済みの保存済みリセット、最後に確認したリリース、`extras.luau` のコピー(アップデート前に作成)は、プラグインのデータフォルダ(`tern.kv`)に保存され、それ以外の場所には書き込みません。Tern はウィジェットの描画に 4 ms しか与えないため、ウィジェットは上記の呼び出しでキャッシュされた値を読み取るだけです。
 
@@ -156,7 +156,7 @@ Tern は、エラーを起こした、またはウィジェットの描画が時
 エージェントの入力の大部分を占めるキャッシュ読み取りが含まれているためです。コストは、それらのトークンを API 価格で計算した金額であり、サブスクリプションの請求額ではありません。
 
 **アップデートするには?**
-**Plugin update** ウィジェットに青い `⬆` が表示されたらクリックするか、**OMP usage: update to the latest version** を実行してください。手動の場合: `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force`。0.4.0 より前のバージョンには更新確認がなく、Windows では 0.4.0 の更新が "The process cannot access the file" で失敗するため、これらは一度だけ手動で更新してください。
+**Plugin update** ウィジェットに青い `⬆` が表示されたらクリックするか、**OMP usage: update to the latest version** を実行してください。手動の場合: `tern plugin install https://github.com/tremklekmz/tern-omp-usage --force`。0.4.0 より前のバージョンには更新確認がなく、Windows では 0.4.0 の更新が "The process cannot access the file" で失敗するため、これらは一度だけ手動で更新してください。
 
 **アンインストールするには?**
 `tern plugin remove omp-usage` を実行してください。
@@ -172,4 +172,4 @@ Tern は、エラーを起こした、またはウィジェットの描画が時
 
 ## スター履歴
 
-[![Star History Chart](https://api.star-history.com/svg?repos=joaodutra88/tern-omp-usage&type=Date)](https://star-history.com/#joaodutra88/tern-omp-usage&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=tremklekmz/tern-omp-usage&type=Date)](https://star-history.com/#tremklekmz/tern-omp-usage&Date)

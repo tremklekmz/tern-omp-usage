@@ -2,10 +2,10 @@
 
 <img src="assets/banner.png" width="760" alt="tern-omp-usage：通过 omp 在 Tern 小组件栏中显示 Claude 和 Codex 额度">
 
-[![check](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml)
+[![check](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/joaodutra88/tern-omp-usage?style=flat)](https://github.com/joaodutra88/tern-omp-usage/stargazers)
-[![Latest release](https://img.shields.io/github/v/release/joaodutra88/tern-omp-usage)](https://github.com/joaodutra88/tern-omp-usage/releases/latest)
+[![GitHub stars](https://img.shields.io/github/stars/tremklekmz/tern-omp-usage?style=flat)](https://github.com/tremklekmz/tern-omp-usage/stargazers)
+[![Latest release](https://img.shields.io/github/v/release/tremklekmz/tern-omp-usage)](https://github.com/tremklekmz/tern-omp-usage/releases/latest)
 
 一个面向 [omp](https://omp.sh) 用户的 [Tern](https://stencil.so/tern) 插件。它的小组件在 Tern 的小组件栏中显示你的 Claude 和 Codex 订阅额度、本周的预算、已保存的重置，以及今天的 token 用量、费用和速度。点击今天的费用即可打开最近 7 天的仪表盘，涵盖 omp 追踪的所有提供商。
 
@@ -57,7 +57,7 @@
 ## 安装
 
 ```sh
-tern plugin install https://github.com/joaodutra88/tern-omp-usage
+tern plugin install https://github.com/tremklekmz/tern-omp-usage
 ```
 
 你需要在 `omp` 中登录 Anthropic 和/或 OpenAI Codex，以便 `omp usage` 能在终端中正常运行。插件使用 Tern 管理的 omp（Windows 上为 `%LOCALAPPDATA%\Tern\omp\bin\omp.exe`，macOS 上为 `~/Library/Application Support/Tern/omp/bin/omp`），如果找不到，则回退到 `PATH` 中的 `omp`。如果 Tern 的守护进程找不到它，请将 `OMP_USAGE_BIN` 设置为完整路径。
@@ -81,9 +81,9 @@ tern plugin install https://github.com/joaodutra88/tern-omp-usage
 将以下内容粘贴到 omp、Claude Code、Codex 或任何能运行命令的代理中：
 
 ```text
-Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
+Install the Tern plugin https://github.com/tremklekmz/tern-omp-usage for me.
 1. Check `omp usage --json -p anthropic` (or `-p openai-codex`) works. If it doesn't, help me sign in with omp first.
-2. Run `tern plugin install https://github.com/joaodutra88/tern-omp-usage`.
+2. Run `tern plugin install https://github.com/tremklekmz/tern-omp-usage`.
 3. Run `tern plugin list --json` and confirm `omp-usage` has status "ready".
 4. If it isn't ready, read the lines containing `omp-usage` in Tern's log
    (`%LOCALAPPDATA%\Tern\Logs\tern.log` on Windows) and the repo's AGENTS.md, then tell me what is wrong.
@@ -101,8 +101,8 @@ Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
 | `omp stats --json` | 每 5 分钟 |
 | `omp usage --history --json --days 7`，然后 `omp stats --json` | 打开仪表盘时，以及在其中按 `r` 时 |
 | `omp usage invalidate` | 点击某个额度小组件时，用于跳过 omp 的缓存 |
-| `GET api.github.com/repos/joaodutra88/tern-omp-usage/releases/latest` | 每台机器每天一次，不使用 token；可通过关闭 `updates` 部分或设置 `OMP_USAGE_NO_UPDATE_CHECK=1` 关闭 |
-| `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force` | 仅在你点击 `⬆` 或运行更新命令时 |
+| `GET api.github.com/repos/tremklekmz/tern-omp-usage/releases/latest` | 每台机器每天一次，不使用 token；可通过关闭 `updates` 部分或设置 `OMP_USAGE_NO_UPDATE_CHECK=1` 关闭 |
+| `tern plugin install https://github.com/tremklekmz/tern-omp-usage --force` | 仅在你点击 `⬆` 或运行更新命令时 |
 
 设置、每天的 token 数和费用（供仪表盘使用）、已经提醒过的已保存重置、最近看到的版本，以及 `extras.luau` 的一份副本（在更新前创建）会保存到插件的数据文件夹（`tern.kv`），不会写到其他地方。小组件只读取上述调用缓存的值，因为 Tern 只给小组件的渲染 4 毫秒的时间。
 
@@ -156,7 +156,7 @@ Tern 会禁用出错的插件，或小组件渲染超出时间预算的插件。
 其中包含缓存读取，它们占了智能体输入的大部分。费用是这些 token 按 API 价格计算的结果，而不是你的订阅实际收取的金额。
 
 **如何更新？**
-**Plugin update** 小组件出现蓝色 `⬆` 时点击它，或运行 **OMP usage: update to the latest version**。手动更新：`tern plugin install https://github.com/joaodutra88/tern-omp-usage --force`。0.4.0 之前的版本没有更新检查，而在 Windows 上 0.4.0 的更新会报错 "The process cannot access the file"，因此这些版本需要手动更新一次。
+**Plugin update** 小组件出现蓝色 `⬆` 时点击它，或运行 **OMP usage: update to the latest version**。手动更新：`tern plugin install https://github.com/tremklekmz/tern-omp-usage --force`。0.4.0 之前的版本没有更新检查，而在 Windows 上 0.4.0 的更新会报错 "The process cannot access the file"，因此这些版本需要手动更新一次。
 
 **如何卸载？**
 `tern plugin remove omp-usage`。
@@ -172,4 +172,4 @@ Tern 会禁用出错的插件，或小组件渲染超出时间预算的插件。
 
 ## Star 历史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=joaodutra88/tern-omp-usage&type=Date)](https://star-history.com/#joaodutra88/tern-omp-usage&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=tremklekmz/tern-omp-usage&type=Date)](https://star-history.com/#tremklekmz/tern-omp-usage&Date)

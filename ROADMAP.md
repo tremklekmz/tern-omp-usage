@@ -1,6 +1,6 @@
 # Roadmap
 
-What shipped, what comes next, and the rules every change follows. Ideas and votes go to [Discussions](https://github.com/joaodutra88/tern-omp-usage/discussions); anything marked **good first issue** in [Issues](https://github.com/joaodutra88/tern-omp-usage/issues) is a fine place to start.
+What shipped, what comes next, and the rules every change follows. Ideas and votes go to [Discussions](https://github.com/joaodutra88/tern-omp-usage/discussions); anything marked **good first issue** in [Issues](https://github.com/tremklekmz/tern-omp-usage/issues) is a fine place to start.
 
 ## Shipped in 0.5.0
 

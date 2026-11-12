@@ -2,10 +2,10 @@
 
 <img src="assets/banner.png" width="760" alt="tern-omp-usage: límites de Claude y Codex desde omp, directamente en la barra de widgets de Tern">
 
-[![check](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/joaodutra88/tern-omp-usage/actions/workflows/check.yml)
+[![check](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml/badge.svg)](https://github.com/tremklekmz/tern-omp-usage/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/joaodutra88/tern-omp-usage?style=flat)](https://github.com/joaodutra88/tern-omp-usage/stargazers)
-[![Latest release](https://img.shields.io/github/v/release/joaodutra88/tern-omp-usage)](https://github.com/joaodutra88/tern-omp-usage/releases/latest)
+[![GitHub stars](https://img.shields.io/github/stars/tremklekmz/tern-omp-usage?style=flat)](https://github.com/tremklekmz/tern-omp-usage/stargazers)
+[![Latest release](https://img.shields.io/github/v/release/tremklekmz/tern-omp-usage)](https://github.com/tremklekmz/tern-omp-usage/releases/latest)
 
 Un plugin de [Tern](https://stencil.so/tern) para usuarios de [omp](https://omp.sh). Sus widgets mantienen en la barra de widgets de Tern los límites de suscripción de Claude y Codex, el presupuesto de esta semana, tus reinicios guardados y los tokens, el costo y la velocidad de hoy. Haz clic en el costo de hoy para abrir un dashboard de los últimos 7 días, con todos los proveedores que omp registra.
 
@@ -57,7 +57,7 @@ Las alertas llegan como avisos emergentes: una ventana que alcanza el umbral de 
 ## Instalación
 
 ```sh
-tern plugin install https://github.com/joaodutra88/tern-omp-usage
+tern plugin install https://github.com/tremklekmz/tern-omp-usage
 ```
 
 Necesitas `omp` con sesión iniciada en Anthropic y/o OpenAI Codex, para que `omp usage` funcione en una terminal. El plugin usa el omp que gestiona Tern (`%LOCALAPPDATA%\Tern\omp\bin\omp.exe` en Windows, `~/Library/Application Support/Tern/omp/bin/omp` en macOS) y recurre a `omp` en el `PATH`. Si el demonio de Tern no lo encuentra, define `OMP_USAGE_BIN` con la ruta completa.
@@ -81,9 +81,9 @@ Para enterarte de las versiones también por correo electrónico, usa **Watch �
 Pega esto en omp, Claude Code, Codex o cualquier agente que pueda ejecutar comandos:
 
 ```text
-Install the Tern plugin https://github.com/joaodutra88/tern-omp-usage for me.
+Install the Tern plugin https://github.com/tremklekmz/tern-omp-usage for me.
 1. Check `omp usage --json -p anthropic` (or `-p openai-codex`) works. If it doesn't, help me sign in with omp first.
-2. Run `tern plugin install https://github.com/joaodutra88/tern-omp-usage`.
+2. Run `tern plugin install https://github.com/tremklekmz/tern-omp-usage`.
 3. Run `tern plugin list --json` and confirm `omp-usage` has status "ready".
 4. If it isn't ready, read the lines containing `omp-usage` in Tern's log
    (`%LOCALAPPDATA%\Tern\Logs\tern.log` on Windows) and the repo's AGENTS.md, then tell me what is wrong.
@@ -101,8 +101,8 @@ El plugin no lee credenciales. Ejecuta omp y hace una única petición de red pr
 | `omp stats --json` | Cada 5 min |
 | `omp usage --history --json --days 7`, luego `omp stats --json` | Al abrir el dashboard y al presionar `r` en él |
 | `omp usage invalidate` | Al hacer clic en un widget de límite, para saltarse la caché de omp |
-| `GET api.github.com/repos/joaodutra88/tern-omp-usage/releases/latest` | Una vez al día por máquina, sin token; se desactiva con la parte `updates` o `OMP_USAGE_NO_UPDATE_CHECK=1` |
-| `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force` | Solo cuando haces clic en `⬆` o ejecutas el comando de actualización |
+| `GET api.github.com/repos/tremklekmz/tern-omp-usage/releases/latest` | Una vez al día por máquina, sin token; se desactiva con la parte `updates` o `OMP_USAGE_NO_UPDATE_CHECK=1` |
+| `tern plugin install https://github.com/tremklekmz/tern-omp-usage --force` | Solo cuando haces clic en `⬆` o ejecutas el comando de actualización |
 
 La configuración, los tokens y el costo de cada día (para el dashboard), los reinicios guardados de los que ya se avisó, la última versión vista y una copia de tu `extras.luau` (hecha antes de una actualización) se guardan en la carpeta de datos del plugin (`tern.kv`), en ningún otro lugar. Un widget solo lee los valores en caché que dejan esas llamadas, porque Tern le da 4 ms a su renderizado.
 
@@ -156,7 +156,7 @@ Vienen del mismo endpoint de uso a través de omp, cada 5 minutos, porque Anthro
 Incluye las lecturas de caché, que son la mayor parte de la entrada de un agente. El costo es lo que esos tokens costarían a precio de API, no lo que cobra tu suscripción.
 
 **¿Cómo lo actualizo?**
-Haz clic en el `⬆` azul del widget **Plugin update** cuando aparezca, o ejecuta **OMP usage: update to the latest version**. A mano: `tern plugin install https://github.com/joaodutra88/tern-omp-usage --force`. Las versiones anteriores a la 0.4.0 no revisan actualizaciones, y en Windows la actualización de la 0.4.0 falla con "The process cannot access the file", así que actualízalas una vez a mano.
+Haz clic en el `⬆` azul del widget **Plugin update** cuando aparezca, o ejecuta **OMP usage: update to the latest version**. A mano: `tern plugin install https://github.com/tremklekmz/tern-omp-usage --force`. Las versiones anteriores a la 0.4.0 no revisan actualizaciones, y en Windows la actualización de la 0.4.0 falla con "The process cannot access the file", así que actualízalas una vez a mano.
 
 **¿Cómo lo desinstalo?**
 `tern plugin remove omp-usage`.
@@ -172,4 +172,4 @@ Es código abierto bajo MIT: úsalo, haz un fork, cámbialo, publícalo. Los iss
 
 ## Historial de estrellas
 
-[![Star History Chart](https://api.star-history.com/svg?repos=joaodutra88/tern-omp-usage&type=Date)](https://star-history.com/#joaodutra88/tern-omp-usage&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=tremklekmz/tern-omp-usage&type=Date)](https://star-history.com/#tremklekmz/tern-omp-usage&Date)
