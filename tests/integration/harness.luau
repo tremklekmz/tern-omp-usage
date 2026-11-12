@@ -413,6 +413,19 @@ function H.world(opts: { [string]: any }?)
 				status = function(fn)
 					w.formatter = fn
 				end,
+				-- Raises like Tern on a bad id, a missing name or render, an unknown style; again replaces in place.
+				widget = function(id: string, spec)
+					assert(half == "window", "tern.chrome.widget is window only")
+					assert(string.match(id, "^[a-z][a-z0-9-]*$") and #id <= 32, "bad widget id " .. id)
+					assert(spec == nil or (type(spec.name) == "string" and type(spec.render) == "function"), "widget " .. id .. " needs a name and render")
+					for _, s in (spec and spec.styles) or {} do
+						assert(s == "text" or s == "bar" or s == "ring" or s == "graph", "unknown widget style " .. tostring(s))
+					end
+					if not w.widgets[id] then
+						table.insert(w.widget_order, id)
+					end
+					w.widgets[id] = spec
+				end,
 			},
 			css = function(name: string, source: string)
 				w.css = w.css or {}
@@ -476,6 +489,7 @@ function H.world(opts: { [string]: any }?)
 	function w:load()
 		self.gen += 1
 		self.commands, self.blocks, self.formatter, self.panes = {}, {}, nil, {}
+		self.widgets, self.widget_order = {}, {}
 		vm("window.luau", "window")
 		vm("host.luau", "host")
 	end
@@ -510,10 +524,35 @@ function H.world(opts: { [string]: any }?)
 		self.now = stop
 	end
 
-	-- The status line text, and the set of commands its segments run.
+	-- What one widget shows for a focused pane (nil when it shows nothing), checked like Tern checks a view.
+	function w:widget(id: string): any?
+		local spec = self.widgets[id] or error("no widget " .. id)
+		local v = frame("status", spec.render, { pane = 1, cwd = "C:\\work", title = "shell" })
+		if v ~= nil then
+			assert(type(v.text) == "string", "widget " .. id .. ": a view without text fails the render")
+			for _, k in { "icon", "tone", "title", "command" } do
+				assert(v[k] == nil or type(v[k]) == "string", "widget " .. id .. ": " .. k .. " must be a string")
+			end
+			assert(v.value == nil or type(v.value) == "number", "widget " .. id .. ": value must be a number")
+			assert(v.series == nil or type(v.series) == "table", "widget " .. id .. ": series must be a list")
+		end
+		return v
+	end
+
+	-- The widget bar with every widget of the plugin placed, in the order they were offered, then the
+	-- "Plugin segments" widget; and the set of commands they run.
 	function w:bar(): (string, { [string]: boolean })
-		local out = frame("status", self.formatter, { pane = 1, cwd = "C:\\work", title = "shell" }) or {}
 		local texts, commands = {}, {}
+		for _, id in self.widget_order do
+			local v = self.widgets[id] and self:widget(id)
+			if v then
+				table.insert(texts, v.text)
+				if v.command then
+					commands[v.command] = true
+				end
+			end
+		end
+		local out = if self.formatter then frame("status", self.formatter, { pane = 1, cwd = "C:\\work", title = "shell" }) or {} else {}
 		for _, seg in out do
 			assert(type(seg) == "table" and type(seg.text) == "string", "a segment without text fails the formatter")
 			table.insert(texts, seg.text)
@@ -521,7 +560,7 @@ function H.world(opts: { [string]: any }?)
 				commands[seg.command] = true
 			end
 		end
-		return table.concat(texts, ""), commands
+		return table.concat(texts, " "), commands
 	end
 
 	-- Clicks a segment or picks a palette command.

@@ -41,4 +41,31 @@ expect(c.month == 14, "the month leaves September out", c.month)
 expect(#c.last7 == 7 and c.last7[1][1] == "10-04" and c.last7[7][1] == "10-10", "bars run oldest first", c.last7[1][1])
 expect(c.last7[2][2] == 0, "a day without an entry costs 0", c.last7[2][2])
 
+-- Tokens since Monday: the 10th is a Saturday, so the 5th to the 10th count and Sunday the 4th doesn't.
+local w = history.week_tokens({
+	["2026-10-10"] = { tokens = 5, cost = 1 },
+	["2026-10-05"] = { tokens = 3, cost = 1 },
+	["2026-10-04"] = { tokens = 100, cost = 1 },
+	["2026-10-07"] = "broken",
+}, now)
+expect(w == 8, "Monday the 5th to Saturday the 10th count, Sunday the 4th doesn't", w)
+
+-- Groups: Claude and Codex first with their short names, then the rest by name; Gemini's two limits share the
+-- label "Gemini", so each gets its window; a limit id without a provider field takes the id's prefix; one quota
+-- reported under two ids (Antigravity's shared Claude & GPT) shows once.
+local g = history.groups({
+	{ provider = "google-antigravity", limitId = "g:5h", label = "Gemini", windowLabel = "5 Hour" },
+	{ provider = "google-antigravity", limitId = "g:wk", label = "Gemini", windowLabel = "Weekly" },
+	{ provider = "google-antigravity", limitId = "g:a:5h", label = "Claude & GPT", windowLabel = "5 Hour" },
+	{ provider = "google-antigravity", limitId = "g:o:5h", label = "Claude & GPT", windowLabel = "5 Hour" },
+	{ provider = "openai-codex", limitId = "openai-codex:secondary", label = "Weekly" },
+	{ limitId = "anthropic:5h", label = "5 Hour" },
+	{ provider = "anthropic", limitId = "anthropic:5h", label = "5 Hour" },
+})
+expect(#g == 3 and g[1].name == "Claude" and g[2].name == "Codex" and g[3].name == "Gemini", "Claude, Codex, then the rest", g[3] and g[3].name)
+expect(#g[1].limits == 1 and g[1].limits[1].label == "5h", "a limit seen twice is listed once, with its short name", #g[1].limits)
+expect(g[2].limits[1].label == "wk", "Codex weekly is wk", g[2].limits[1].label)
+expect(g[3].limits[1].label == "Gemini · 5 Hour" and g[3].limits[2].label == "Gemini · Weekly", "a shared label gets its window", g[3].limits[1].label)
+expect(#g[3].limits == 3 and g[3].limits[3].label == "Claude & GPT · 5 Hour", "a quota reported twice shows once", #g[3].limits)
+
 print("history_test: ok")

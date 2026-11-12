@@ -13,7 +13,7 @@ local function has(text: string, part: string): boolean
 	return string.find(text, part, 1, true) ~= nil
 end
 
--- A fresh install: the omp Tern manages answers, the bar fills in, and three fetch rounds stay within budget.
+-- A fresh install: the omp Tern manages answers, the widgets fill in, and three fetch rounds stay within budget.
 do
 	local w = H.world()
 	w:load()
@@ -21,13 +21,17 @@ do
 	local text = w:bar()
 	expect(w.spawned[1].argv[1] == H.OMP, "the omp that Tern manages is the one that runs", w.spawned[1].argv[1])
 	expect(has(text, "11%") and has(text, "20%"), "Claude 5h and week from the recorded answer", text)
-	expect(has(text, "Codex") and has(text, "×2"), "Codex with its two accounts", text)
+	expect(w:widget("codex-5h") and has(w:widget("codex-5h").title, "Accounts: 2"), "Codex with its two accounts", text)
 	expect(has(text, "$12"), "today's cost leaves out yesterday's bucket", text)
-	expect(not has(text, "⚠") and not has(text, "⬆"), "no warning and no update badge", text)
+	expect(not has(text, "⬆"), "no update badge", text)
+	local health = w:widget("health")
+	expect(health and has(health.text, "Codex off") and has(health.title, "Codex: login off\noauth refresh failed · 401"), "the login omp turned off shows", health and health.title)
+	expect(not has(health.title, "@"), "without the account's e-mail", health.title)
 	expect(#w.toasts == 0, "a first install shows no toast", w:toast_texts())
 	local today = os.date("%Y-%m-%d") :: string
 	expect(w.kv.days and w.kv.days[today] and w.kv.days[today].cost == 12.4, "today's total is kept for the dashboard")
 	w:run(3 * H.FETCH_MS)
+	expect(#w.toasts == 0, "a login that was already off doesn't toast again", w:toast_texts())
 	clean(w)
 end
 
@@ -39,7 +43,7 @@ do
 	w:load()
 	w:run(10000)
 	local text = w:bar()
-	expect(not has(text, "Codex") and not has(text, "⚠"), "Codex without an account is hidden, not an error", text)
+	expect(w:widget("codex-5h") == nil and not has(text, "⚠"), "Codex without an account is hidden, not an error", text)
 	clean(w)
 
 	w = H.world()
@@ -62,7 +66,7 @@ do
 	w:run(H.FETCH_MS) -- same level again: silent
 	w.vars.C5 = 1
 	w:run(H.FETCH_MS)
-	expect(has(w:bar(), "CLAUDE LOCKED"), "a full window shows the lock", w:bar())
+	expect(has(w:bar(), "5h LOCKED"), "a full window shows the lock", w:bar())
 	w.vars.C5 = 0.1
 	w:run(H.FETCH_MS)
 	local toasts = w:toast_texts()
@@ -107,22 +111,22 @@ do
 	clean(w)
 end
 
--- The dashboard: a click on the cost opens it with the history and the week's cost; another click focuses the
--- same pane; `r` reads the history again. No e-mail or account id from the history reaches the view.
+-- The dashboard: a click on the cost widget opens it with the history and the week's cost; a click on the tokens
+-- focuses the same pane; `r` reads the history again. No e-mail or account id from the history reaches the view.
 do
 	local w = H.world()
 	w:load()
 	w:run(10000)
-	w:click("plugin.omp-usage.cost")
+	w:click(w:widget("cost").command)
 	w:run(1000)
 	local id = w.focused
-	expect(id ~= nil and w.panes[id] ~= nil, "the cost segment opens the dashboard")
+	expect(id ~= nil and w.panes[id] ~= nil, "the cost widget opens the dashboard")
 	local view = w:view(id)
 	expect(has(view, "Claude") and has(view, "Codex") and has(view, "5h") and has(view, "wk"), "both providers' windows", view)
 	expect(has(view, "Today") and has(view, "$12"), "today's cost", view)
 	expect(not has(view, "@") and not has(view, "acct-"), "no e-mail or account id", view)
 
-	w:click("plugin.omp-usage.today")
+	w:click(w:widget("today").command)
 	w:run(100)
 	local open = 0
 	for _ in w.panes do
@@ -133,7 +137,7 @@ do
 	local before = #w.spawned
 	w:key(id, "r")
 	w:run(1000)
-	expect(#w.spawned == before + 1 and w.spawned[#w.spawned].argv[3] == "--history", "r reads the history again")
+	expect(#w.spawned > before and w.spawned[before + 1].argv[3] == "--history", "r reads the history again")
 	clean(w)
 end
 

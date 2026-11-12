@@ -2,6 +2,15 @@
 
 What shipped, what comes next, and the rules every change follows. Ideas and votes go to [Discussions](https://github.com/joaodutra88/tern-omp-usage/discussions); anything marked **good first issue** in [Issues](https://github.com/joaodutra88/tern-omp-usage/issues) is a fine place to start.
 
+## Shipped in 0.5.0
+
+- **Widgets.** The usage leaves Tern's **Plugin segments** widget for widgets of its own, one per answer, which people place, order and style in Tern's widget editor. A new feature is a new widget, so an update never changes someone's bar by surprise.
+- **Saved resets**: usable now / saved, and a toast when one becomes usable or a usable one is about to expire.
+- **Problems**: a widget and a toast when omp fails or turns a login off.
+- **Speed and cache** from `omp stats`.
+- **Dashboard for every provider** `omp usage` reports (Gemini, xAI, OpenCode Go…), and the cost by model.
+- **"Today" starts at local midnight**, not at midnight UTC.
+
 ## Shipped in 0.4.1
 
 - **The one-click update works on Windows.** It ran inside the plugin's own folder, which Windows won't replace. On Windows, 0.4.0 users reinstall by hand once.
@@ -20,16 +29,13 @@ What shipped, what comes next, and the rules every change follows. Ideas and vot
 
 ## Next
 
-- [ ] A toast when a saved usage-limit reset becomes available.
-- [ ] Make the "reset soon" window (30 min) a setting, next to the red-badge threshold.
-- [ ] New features start turned off and the "updated" toast offers to turn them on, so an update never changes someone's bar by surprise.
-- [ ] A dashboard row for every other provider `omp usage` reports (Gemini, Copilot…), not only Claude and Codex.
 - [ ] More languages: copy `en` in `labels.luau`, translate, open a pull request.
-- [ ] Rendered images of the dashboard and the alert toast for the README, from canned `omp` replies like the other images.
+- [ ] Rendered images of the widgets in each state (calm, rising, hot, over budget, locked), the dashboard and the alert toasts for the README, from canned `omp` replies.
 
 ## Rules for every change
 
-- The status formatter gets 4 ms: no process, file or `tern.kv` read inside `tern.chrome.status`. Timers and callbacks get 50 ms: start one process or request per callback at most.
+- A widget's render gets 4 ms: no process, file or `tern.kv` read inside it (nor inside `tern.chrome.status`). Timers and callbacks get 50 ms: start one process or request per callback at most.
+- Widget ids are in people's saved bars: add new ones, never rename or remove one without saying so in the changelog.
 - Tern's CSS is a subset; `scripts/check.py` catches the properties it rejects. Strings must be valid UTF-8.
 - Every word the plugin shows lives in `labels.luau`.
 - The only network request is the daily release check, with no token, and it can be turned off.

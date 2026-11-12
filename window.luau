@@ -1,4 +1,4 @@
--- Claude and Codex usage from omp in Tern's status line (usage.luau). See README.md.
+-- Claude and Codex usage from omp as widgets in Tern's widget bar (usage.luau). See README.md.
 local config = require("./config")
 local update = require("./update")
 local usage = require("./usage")
@@ -54,12 +54,12 @@ tern.command({
 	icon = "gauge",
 	run = open_dashboard,
 })
-hidden("today", open_dashboard)
-hidden("cost", open_dashboard)
-usage.init(OMP, hidden)
 config.load()
+usage.init(OMP)
 config.commands()
 update.init()
+usage.widgets()
+update.widget()
 
 -- window_start doesn't fire again after `tern plugin reload`; a load-time timer covers both. Each callback starts
 -- one process or request at most: one over 50 ms makes Tern turn off every timer of the plugin until a reload.
@@ -80,58 +80,22 @@ tern.timer(2000, function(cx)
 	look(cx)
 end)
 tern.timer(TICK_MS, function()
-	-- The countdown moves without new data, and another window may have changed a setting.
+	-- The countdown moves without new data, and another window may have changed a setting; a new language renames
+	-- the widgets in the gallery. usage.paint() also redraws the bar.
+	local language = config.get("language")
 	every(TICK_MS, function()
 		config.load()
-		tern.chrome.refresh()
+		if config.get("language") ~= language then
+			language = config.get("language")
+			usage.widgets()
+			update.widget()
+		end
+		usage.paint()
 	end)
 end)
 
-tern.css("statusline", [[
-/* Tern spaces plugin segments with a flex gap; zero it and let each segment set its own margin.
-   Descendant, not child: since Tern 0.9.16 .sl-plugins sits inside a .sb-grp. */
-#statusline .sl-plugins { gap: 0 !important; }
-#statusline .sl-plugins > .sl-plugin { margin-left: 6px; }
-#statusline .sl-plugin[title^="plugin.omp-usage."] { margin: 0 0 0 6px; padding: 0; }
-#statusline .sl-plugin[title="plugin.omp-usage.claude"] { margin-left: 16px; padding-left: 12px;
-  border-left: 1px solid rgb(255 255 255 / 10%); color: #d97757; font-weight: 600; }
-#statusline .sl-plugin[title="plugin.omp-usage.codex"] { margin-left: 16px; padding-left: 12px;
-  border-left: 1px solid rgb(255 255 255 / 10%); color: #3b82f6; font-weight: 700; }
-#statusline .sl-plugin[title="plugin.omp-usage.today"] { margin-left: 16px; padding-left: 12px;
-  border-left: 1px solid rgb(255 255 255 / 10%); color: #fb923c; font-weight: 600; }
-#statusline .sl-plugin[title="plugin.omp-usage.cost"] { margin-left: 8px; padding: 0 6px; border-radius: 4px;
-  color: #4ade80; background: rgb(74 222 128 / 12%); font-weight: 700; }
-#statusline .sl-plugin[title="plugin.omp-usage.credits"] { color: #c084fc; }
-#statusline .sl-plugin[title="plugin.omp-usage.slack-ok"] { margin-left: 10px; padding: 0 6px; border-radius: 4px;
-  color: #4ade80; background: rgb(74 222 128 / 12%); font-weight: 700; }
-#statusline .sl-plugin[title="plugin.omp-usage.slack-bad"] { margin-left: 10px; padding: 0 6px; border-radius: 4px;
-  color: #f87171; background: rgb(239 68 68 / 18%); font-weight: 700; animation: omppulse 1.2s ease-in-out infinite; }
-#statusline .sl-plugin[title="plugin.omp-usage.reset"] { color: rgb(255 255 255 / 45%); }
-#statusline .sl-plugin[title="plugin.omp-usage.reset-soon"] { color: #4ade80; font-weight: 600; }
-#statusline .sl-plugin[title="plugin.omp-usage.eta"] { margin-left: 4px; color: #fb923c; font-weight: 600; }
-#statusline .sl-plugin[title="plugin.omp-usage.locked"] { margin-left: 16px; color: #fff; background: #b91c1c;
-  padding: 0 6px; border-radius: 4px; font-weight: 700; animation: omppulse 0.9s ease-in-out infinite; }
-#statusline .sl-plugin[title^="plugin.omp-usage.dot-"] { margin-left: 0; }
-#statusline .sl-plugin[title="plugin.omp-usage.dot-1"] { margin-left: 6px; color: #22c55e; }
-#statusline .sl-plugin[title="plugin.omp-usage.dot-2"] { color: #a3e635; }
-#statusline .sl-plugin[title="plugin.omp-usage.dot-3"] { color: #facc15; }
-#statusline .sl-plugin[title="plugin.omp-usage.dot-4"] { color: #f97316; }
-#statusline .sl-plugin[title="plugin.omp-usage.dot-5"] { color: #ef4444; }
-#statusline .sl-plugin[title="plugin.omp-usage.empty"] { color: rgb(255 255 255 / 14%); }
-#statusline .sl-plugin[title^="plugin.omp-usage.dot-"] + .sl-plugin[title="plugin.omp-usage.empty"] { margin-left: 0; }
-#statusline .sl-plugin[title="plugin.omp-usage.pct-1"] { color: #22c55e; }
-#statusline .sl-plugin[title="plugin.omp-usage.pct-2"] { color: #a3e635; }
-#statusline .sl-plugin[title="plugin.omp-usage.pct-3"] { color: #facc15; }
-#statusline .sl-plugin[title="plugin.omp-usage.pct-4"] { color: #f97316; font-weight: 600; }
-#statusline .sl-plugin[title="plugin.omp-usage.pct-crit"] { color: #fff; font-weight: 700; background: #dc2626;
-  padding: 0 4px; border-radius: 3px; animation: omppulse 1.2s ease-in-out infinite; }
-#statusline .sl-plugin[title="plugin.omp-usage.update"] { margin-left: 10px; padding: 0 6px; border-radius: 4px;
-  color: #fff; background: #2563eb; font-weight: 700; }
-@keyframes omppulse { 50% { opacity: 0.35; } }
-]])
-
--- Personal segments: extras.luau beside window.luau (git ignores it), else the copy an update moved to the
--- data folder, because `tern plugin install --force` replaces this folder.
+-- Personal widgets and segments: extras.luau beside window.luau (git ignores it), else the copy an update moved to the
+-- data folder, because `tern plugin install --force` replaces this folder. Segments go to "Plugin segments".
 local function load_extras(): any?
 	local ok, mod = pcall(require, "./extras")
 	if ok then
@@ -148,15 +112,11 @@ end
 local extras = load_extras()
 if extras then
 	extras.init(hidden, every)
-end
-
-tern.chrome.status(function(pane)
-	local out = {}
-	if extras then
-		extras.segments(out, pane)
+	if extras.segments then
+		tern.chrome.status(function(pane)
+			local out = {}
+			extras.segments(out, pane)
+			return out
+		end)
 	end
-	-- First, so a narrow window that clips the end of the status line still shows it.
-	update.segments(out)
-	usage.segments(out)
-	return out
-end)
+end

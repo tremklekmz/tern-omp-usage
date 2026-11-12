@@ -1,8 +1,8 @@
 schema = 1
 id = "omp-usage"
 name = "OMP usage"
-version = "0.4.4"
-description = "Claude and Codex limits from omp in the status line, with a work-week budget, saved resets, today's tokens and cost, alerts and a 7-day dashboard."
+version = "0.6.2"
+description = "Claude and Codex limits from omp as widgets in Tern's widget bar, with a work-week budget, saved resets, today's tokens, cost and speed, alerts and a 7-day dashboard."
 icon = "gauge"
 host = "host.luau"
 window = "window.luau"
